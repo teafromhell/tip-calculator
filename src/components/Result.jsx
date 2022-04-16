@@ -1,56 +1,43 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "./Result.scss";
-
-function Result({
-  bill,
-  people,
-  active,
+import {
   setValue,
   setPeople,
   setActive,
-  customTip,
   setCustomTip,
-}) {
-  // const [char, setChar] = useState({})
-  // useEffect(()=>{
+} from "../features/calc/calcSlice";
 
-  //   setChar(JSON.parse(localStorage.getItem('all')))
-  // },[all.people, all.bill, all.tip])
-  // console.log(char)
-
+function Result() {
+  const calc = useSelector((state) => state.calc);
+  const dispatch = useDispatch();
   const [res, setRes] = useState("");
   const [total, setTotal] = useState("");
 
   useEffect(() => {
-    // if (customTip !== "") {
-    //   active = customTip;
-    // }
-    const tipPerson = (bill * active * 0.01) / people;
+    const tipPerson = (calc.bill * calc.active * 0.01) / calc.people;
     if (isNaN(tipPerson) || !isFinite(tipPerson)) {
       setRes("0.00");
     } else {
       setRes(tipPerson.toFixed(2));
     }
-  }, [bill, active, people, customTip]);
+  }, [calc.bill, calc.active, calc.people]);
 
   useEffect(() => {
-    // if (customTip !== "") {
-    //   active = customTip;
-    // }
-    const totalPay = (bill * (1 + active * 0.01)) / people;
+    const totalPay = (calc.bill * (1 + calc.active * 0.01)) / calc.people;
     if (isNaN(totalPay) || !isFinite(totalPay)) {
       setTotal("0.00");
     } else {
       setTotal(totalPay.toFixed(2));
     }
-  }, [bill, active, people, customTip]);
+  }, [calc.bill, calc.active, calc.people]);
 
   const submitReset = () => {
-    setValue("");
-    setPeople("");
-    setActive("");
-    setCustomTip("");
+    dispatch(setValue(""));
+    dispatch(setPeople(""));
+    dispatch(setActive(""));
+    dispatch(setCustomTip(""));
   };
   return (
     <div className="result">

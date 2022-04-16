@@ -1,35 +1,35 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import dollar from "../images/icon-dollar.svg";
 import person from "../images/icon-person.svg";
 import "./Count.scss";
-
-function Count({
-  bill,
-  people,
-  active,
+import {
   setValue,
   setPeople,
   setActive,
-  customTip,
   setCustomTip,
-}) {
+} from "../features/calc/calcSlice";
+
+function Count() {
   const arrayOfTips = [5, 10, 15, 25, 50];
+  const calc = useSelector((state) => state.calc);
+  const dispatch = useDispatch();
 
   const submitValue = (e) => {
-    setValue(e.target.value);
+    dispatch(setValue(e.target.value));
   };
 
   const submitPeople = (e) => {
-    setPeople(e.target.value);
+    dispatch(setPeople(e.target.value));
   };
 
   const createButtons = () => {
     const tips = [];
     for (let i = 0; i < 5; i++) {
       const changeActive = () => {
-        setActive(arrayOfTips[i]);
-        setCustomTip("");
+        dispatch(setActive(arrayOfTips[i]));
+        dispatch(setCustomTip(""));
       };
 
       tips.push(
@@ -37,7 +37,7 @@ function Count({
           key={i}
           onClick={changeActive}
           className={`${
-            active === arrayOfTips[i] ? "count__f-btn--active" : ""
+            calc.active === arrayOfTips[i] ? "count__f-btn--active" : ""
           } count__f-btn`}
         >
           {arrayOfTips[i]}%
@@ -48,8 +48,8 @@ function Count({
   };
 
   const changeCurrentTip = (e) => {
-    setCustomTip(e.target.value);
-    setActive(e.target.value);
+    dispatch(setCustomTip(e.target.value));
+    dispatch(setActive(e.target.value));
   };
 
   const checkLetters = (e) => {
@@ -65,17 +65,9 @@ function Count({
     <div className="count">
       <form className="count__bill" action="">
         <label htmlFor="">Bill</label>
-        {/* <span
-          className={
-            bill > 100000 ? "count__span count__span--active" : "count__span"
-          }
-        >
-          {" "}
-          1kk is a limit{" "}
-        </span> */}
         <input
           type="text"
-          value={bill}
+          value={calc.bill}
           onChange={submitValue}
           placeholder="0"
           maxlength="7"
@@ -88,20 +80,22 @@ function Count({
           Select Tip %
         </label>
         {createButtons()}
-        <div className="test"><input
-          value={customTip}
-          onChange={changeCurrentTip}
-          className="count__c-input"
-          placeholder="Custom"
-          maxlength="2"
-          onKeyPress={checkLetters}
-        /></div>
+        <div className="test">
+          <input
+            onChange={changeCurrentTip}
+            className="count__c-input"
+            placeholder="Custom"
+            maxlength="2"
+            onKeyPress={checkLetters}
+            value={calc.customTip}
+          />
+        </div>
       </div>
       <form className="count__people" action="">
         <label htmlFor="">Number of People</label>
         <span
           className={
-            bill > 0 && active > 0 && !people
+            calc.bill > 0 && calc.active > 0 && !calc.people
               ? "count__span count__span--active"
               : "count__span"
           }
@@ -110,13 +104,13 @@ function Count({
         </span>
 
         <input
-            className={
-                bill > 0 && active > 0 && !people
-                  ? "count__input count__input--active"
-                  : "count__input"
-              }
+          className={
+            calc.bill > 0 && calc.active > 0 && !calc.people
+              ? "count__input count__input--active"
+              : "count__input"
+          }
           type="text"
-          value={people}
+          value={calc.people}
           onChange={submitPeople}
           placeholder="0"
           maxlength="5"
