@@ -58,12 +58,14 @@
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     gap: 5px;
+    
   }
   &__select-tip {
     grid-row: 1;
     grid-column: 1/4;
     color: $Grayishcyan;
     font-size: 14px;
+    align-self: flex-end;
   }
   &__span {
     position: absolute;
@@ -107,6 +109,7 @@
       color: $Grayishcyan;
       font-size: 14px;
       margin-bottom: 3px;
+      margin-top: 5px;
     }
   }
 
@@ -154,5 +157,8 @@
 @media screen and (max-width: 700px) {
   .count {
     margin-right: 0;
+    label {
+      margin-top: 5px;
+    }
   }
 }
