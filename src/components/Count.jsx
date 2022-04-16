@@ -56,9 +56,6 @@ function Count() {
     if (!/[0-9]/.test(e.key)) {
       e.preventDefault();
     }
-    if (e.target.value > 10000) {
-      e.preventDefault();
-    }
   };
 
   return (
@@ -70,7 +67,7 @@ function Count() {
           value={calc.bill}
           onChange={submitValue}
           placeholder="0"
-          maxlength="7"
+          maxlength="5"
           onKeyPress={checkLetters}
         />
         <img className="count__dollar-icon" src={dollar} alt="dollar" />
